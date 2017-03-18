@@ -1,0 +1,29 @@
+package main
+
+import (
+ "fmt"
+ "strings"
+ "net/http"
+ "io/ioutil"
+)
+
+func main() {
+
+ url := "https://api.evasrv.com/batch_process/"
+
+ payload := strings.NewReader("user_API_token=YOUR-EV-API-TOKEN&role_address=true&bad_address=true&free_email=true&disposable=true&typo_suggest=true&source_file=https%3A%2F%2Fwww.domain.com%2Fmy-mailing-list.csv")
+
+ req, _ := http.NewRequest("POST", url, payload)
+
+ req.Header.Add("cache-control", "no-cache")
+ req.Header.Add("content-type", "application/x-www-form-urlencoded")
+
+ res, _ := http.DefaultClient.Do(req)
+
+ defer res.Body.Close()
+ body, _ := ioutil.ReadAll(res.Body)
+
+ fmt.Println(res)
+ fmt.Println(string(body))
+
+}
